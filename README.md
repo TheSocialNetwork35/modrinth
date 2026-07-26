@@ -16,3 +16,14 @@ Formspree-powered contact form.
 
 The site is plain HTML, CSS, and JavaScript with no build step. Open `index.html`
 locally or serve the repository with any static file server.
+
+## Cloudflare Pages
+
+The repository is ready for Cloudflare Pages:
+
+- Build command: leave empty
+- Build output directory: `.`
+- Root directory: `/`
+
+`_headers` adds security headers, allows the Formspree connection through the
+Content Security Policy, and caches the project images at Cloudflare's edge.
