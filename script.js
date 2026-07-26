@@ -94,7 +94,7 @@ function validateForm() {
   let firstInvalidField = null;
   const requiredFields = [
     [projectSelect, "Choose a project."],
-    [document.querySelector("#version"), "Enter the project version."],
+    [document.querySelector("#minecraft-version"), "Enter the Minecraft version."],
     [document.querySelector("#name"), "Enter your name."],
     [document.querySelector("#email"), "Enter a valid email address."],
     [message, "Please add at least 20 characters so the feedback is actionable."],

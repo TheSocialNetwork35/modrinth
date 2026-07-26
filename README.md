@@ -1,7 +1,7 @@
 # Modrinth Project Feedback
 
 A focused feedback page for six Modrinth projects by
-[TheSocialNetwork35](https://modrinth.com/user/TheSocialNetwork35). Visitors can
+[Yannis_](https://modrinth.com/user/Yannis_). Visitors can
 report a problem, propose a feature, or suggest an improvement through one shared
 Formspree-powered contact form.
 

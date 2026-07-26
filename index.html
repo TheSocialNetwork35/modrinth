@@ -9,7 +9,8 @@
     />
     <meta name="theme-color" content="#111315" />
     <title>Project Feedback · TheSocialNetwork35</title>
-    <link rel="icon" href="assets/projects/screenshot-to-clipboard.png" />
+    <link rel="icon" type="image/png" href="assets/brand/favicon.png" />
+    <link rel="apple-touch-icon" href="assets/brand/project-feedback-logo.png" />
     <link rel="stylesheet" href="styles.css" />
     <script src="script.js" defer></script>
   </head>
@@ -19,16 +20,13 @@
     <header class="site-header">
       <a class="brand" href="./" aria-label="Project Feedback home">
         <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="22" height="22">
-            <path d="m12 3-8 4.5v9L12 21l8-4.5v-9L12 3Z" />
-            <path d="m8.5 9.5 7 5m0-5-7 5" />
-          </svg>
+          <img src="assets/brand/project-feedback-logo.png" alt="" width="34" height="30" />
         </span>
         <span>Project Feedback</span>
       </a>
       <a
         class="icon-button"
-        href="https://modrinth.com/user/TheSocialNetwork35"
+        href="https://modrinth.com/user/Yannis_"
         target="_blank"
         rel="noreferrer"
         aria-label="View creator on Modrinth"
@@ -128,8 +126,8 @@
           <p class="step-label">02 · Share the details</p>
           <h2 id="feedback-heading">Tell me what’s up.</h2>
           <p>
-            A little context goes a long way. Please include the version and steps to
-            reproduce a problem when possible.
+            A little context goes a long way. Please include the Minecraft version and
+            steps to reproduce a problem when possible.
           </p>
           <div class="selected-preview" id="selected-preview" hidden>
             <img id="selected-project-image" src="" alt="" width="52" height="52" />
@@ -205,29 +203,29 @@
           </fieldset>
 
           <div class="field">
-            <label for="version">Project version <span aria-hidden="true">*</span></label>
+            <label for="version">Project version <span class="optional">Optional</span></label>
             <input
               id="version"
               name="version"
               type="text"
-              required
               maxlength="40"
               placeholder="e.g. 1.4.2"
               autocomplete="off"
             />
-            <p class="field-error" id="version-error"></p>
           </div>
 
           <div class="field">
-            <label for="minecraft-version">Minecraft version <span class="optional">Optional</span></label>
+            <label for="minecraft-version">Minecraft version <span aria-hidden="true">*</span></label>
             <input
               id="minecraft-version"
               name="minecraft_version"
               type="text"
+              required
               maxlength="40"
               placeholder="e.g. 1.21.8"
               autocomplete="off"
             />
+            <p class="field-error" id="minecraft-version-error"></p>
           </div>
 
           <div class="field">

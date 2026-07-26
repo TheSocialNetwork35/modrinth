@@ -114,9 +114,15 @@ footer {
   height: 42px;
   place-items: center;
   border-radius: 13px;
-  background: var(--accent);
-  color: var(--accent-ink);
+  border: 1px solid rgba(121, 245, 169, 0.38);
+  background: #101a14;
   box-shadow: 0 8px 28px rgba(32, 232, 120, 0.18);
+}
+
+.brand-mark img {
+  display: block;
+  width: 34px;
+  height: auto;
 }
 
 .icon-button {
@@ -364,6 +370,10 @@ h2 {
   border: 1px solid var(--border);
   border-radius: 18px;
   background: var(--surface);
+}
+
+.selected-preview[hidden] {
+  display: none;
 }
 
 .selected-preview img {
