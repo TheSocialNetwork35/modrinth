@@ -95,7 +95,7 @@ footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-block: 22px;
+  padding-block: 16px;
 }
 
 .brand {
@@ -150,14 +150,14 @@ footer {
   display: grid;
   grid-template-columns: 1.4fr 0.6fr;
   align-items: end;
-  gap: 60px;
-  min-height: 430px;
-  padding: 82px 0 76px;
+  gap: 42px;
+  min-height: 350px;
+  padding: 54px 0 58px;
 }
 
 .eyebrow,
 .step-label {
-  margin: 0 0 22px;
+  margin: 0 0 16px;
   color: var(--muted);
   font-size: 12px;
   font-weight: 800;
@@ -202,12 +202,12 @@ h1 span {
   margin-bottom: 4px;
   color: var(--muted);
   font-size: 17px;
-  line-height: 1.65;
+  line-height: 1.55;
 }
 
 .project-section {
   position: relative;
-  padding: 36px;
+  padding: 28px;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: var(--surface-soft);
@@ -218,8 +218,8 @@ h1 span {
 
 .project-section::before {
   position: absolute;
-  top: 34px;
-  bottom: 34px;
+  top: 26px;
+  bottom: 26px;
   left: -1px;
   width: 3px;
   border-radius: 999px;
@@ -232,7 +232,7 @@ h1 span {
   align-items: end;
   justify-content: space-between;
   gap: 24px;
-  margin-bottom: 30px;
+  margin-bottom: 22px;
 }
 
 .section-heading .step-label {
@@ -268,8 +268,8 @@ h2 {
   display: flex;
   min-width: 0;
   align-items: center;
-  gap: 16px;
-  padding: 14px;
+  gap: 14px;
+  padding: 12px;
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
@@ -302,9 +302,9 @@ h2 {
 
 .project-card img {
   flex: none;
-  width: 64px;
-  height: 64px;
-  border-radius: 14px;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
   image-rendering: pixelated;
 }
 
@@ -338,8 +338,8 @@ h2 {
 .feedback-section {
   display: grid;
   grid-template-columns: minmax(240px, 0.62fr) minmax(0, 1.38fr);
-  gap: 70px;
-  padding: 128px 0 138px;
+  gap: 48px;
+  padding: 80px 0 90px;
   scroll-margin-top: 24px;
 }
 
@@ -351,13 +351,13 @@ h2 {
 
 .form-intro h2 {
   max-width: 380px;
-  margin-bottom: 22px;
+  margin-bottom: 16px;
 }
 
 .form-intro > p:not(.step-label) {
   max-width: 365px;
   color: var(--muted);
-  line-height: 1.65;
+  line-height: 1.55;
 }
 
 .selected-preview {
@@ -365,7 +365,7 @@ h2 {
   align-items: center;
   gap: 13px;
   width: fit-content;
-  margin-top: 30px;
+  margin-top: 22px;
   padding: 10px 15px 10px 10px;
   border: 1px solid var(--border);
   border-radius: 18px;
@@ -399,8 +399,8 @@ h2 {
 .feedback-form {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px 16px;
-  padding: 30px;
+  gap: 16px 14px;
+  padding: 24px;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   background: var(--surface);
@@ -420,7 +420,7 @@ h2 {
 label,
 legend {
   display: block;
-  margin-bottom: 9px;
+  margin-bottom: 7px;
   color: #d9dcde;
   font-size: 13px;
   font-weight: 720;
@@ -460,7 +460,7 @@ textarea {
 
 input,
 select {
-  height: 54px;
+  height: 50px;
   padding: 0 15px;
 }
 
@@ -471,7 +471,7 @@ select {
 }
 
 textarea {
-  min-height: 166px;
+  min-height: 146px;
   padding: 15px;
   line-height: 1.55;
   resize: vertical;
@@ -528,7 +528,7 @@ textarea:focus {
 
 .type-option span {
   display: flex;
-  height: 54px;
+  height: 50px;
   align-items: center;
   justify-content: center;
   gap: 8px;
@@ -559,8 +559,8 @@ textarea:focus {
 }
 
 .field-error {
-  min-height: 17px;
-  margin: 6px 2px 0;
+  min-height: 14px;
+  margin: 4px 2px 0;
   color: var(--danger);
   font-size: 11px;
   line-height: 1.35;
@@ -699,7 +699,7 @@ footer {
   align-items: center;
   justify-content: space-between;
   gap: 20px;
-  padding: 26px 0 34px;
+  padding: 20px 0 26px;
   border-top: 1px solid var(--border);
   color: var(--muted);
   font-size: 13px;
@@ -745,9 +745,9 @@ footer a {
 @media (max-width: 880px) {
   .hero {
     grid-template-columns: 1fr;
-    gap: 30px;
+    gap: 24px;
     min-height: 0;
-    padding: 74px 0 72px;
+    padding: 48px 0 52px;
   }
 
   .hero-copy {
@@ -760,8 +760,8 @@ footer a {
 
   .feedback-section {
     grid-template-columns: 1fr;
-    gap: 42px;
-    padding: 96px 0 110px;
+    gap: 32px;
+    padding: 66px 0 76px;
   }
 
   .form-intro {
@@ -781,7 +781,7 @@ footer a {
   }
 
   .hero {
-    padding: 56px 4px 58px;
+    padding: 40px 4px 44px;
   }
 
   h1 {
@@ -789,7 +789,7 @@ footer a {
   }
 
   .project-section {
-    padding: 18px;
+    padding: 16px;
     border-radius: 25px;
   }
 
@@ -807,16 +807,16 @@ footer a {
   }
 
   .project-card {
-    min-height: 84px;
+    min-height: 76px;
   }
 
   .feedback-section {
-    padding: 80px 4px 90px;
+    padding: 58px 4px 66px;
   }
 
   .feedback-form {
     grid-template-columns: 1fr;
-    padding: 18px;
+    padding: 16px;
     border-radius: 25px;
   }
 

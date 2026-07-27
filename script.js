@@ -92,15 +92,14 @@ function setFieldError(field, text) {
 
 function validateForm() {
   let firstInvalidField = null;
-  const requiredFields = [
+  const validatedFields = [
     [projectSelect, "Choose a project."],
     [document.querySelector("#minecraft-version"), "Enter the Minecraft version."],
-    [document.querySelector("#name"), "Enter your name."],
     [document.querySelector("#email"), "Enter a valid email address."],
     [message, "Please add at least 20 characters so the feedback is actionable."],
   ];
 
-  requiredFields.forEach(([field, errorText]) => {
+  validatedFields.forEach(([field, errorText]) => {
     clearFieldError(field);
     if (!field.checkValidity()) {
       setFieldError(field, errorText);

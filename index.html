@@ -7,7 +7,7 @@
       name="description"
       content="Report a bug, suggest a feature, or share an improvement for a TheSocialNetwork35 Modrinth project."
     />
-    <meta name="theme-color" content="#111315" />
+    <meta name="theme-color" content="#08110c" />
     <title>Project Feedback · TheSocialNetwork35</title>
     <link rel="icon" type="image/png" href="assets/brand/favicon.png" />
     <link rel="apple-touch-icon" href="assets/brand/project-feedback-logo.png" />
@@ -203,18 +203,6 @@
           </fieldset>
 
           <div class="field">
-            <label for="version">Project version <span class="optional">Optional</span></label>
-            <input
-              id="version"
-              name="version"
-              type="text"
-              maxlength="40"
-              placeholder="e.g. 1.4.2"
-              autocomplete="off"
-            />
-          </div>
-
-          <div class="field">
             <label for="minecraft-version">Minecraft version <span aria-hidden="true">*</span></label>
             <input
               id="minecraft-version"
@@ -229,18 +217,11 @@
           </div>
 
           <div class="field">
-            <label for="name">Your name <span aria-hidden="true">*</span></label>
-            <input id="name" name="name" type="text" required maxlength="80" autocomplete="name" placeholder="Steve" />
-            <p class="field-error" id="name-error"></p>
-          </div>
-
-          <div class="field">
-            <label for="email">Email <span aria-hidden="true">*</span></label>
+            <label for="email">Email <span class="optional">Optional</span></label>
             <input
               id="email"
               name="email"
               type="email"
-              required
               maxlength="120"
               autocomplete="email"
               placeholder="steve@example.com"
