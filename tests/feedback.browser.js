@@ -1,7 +1,7 @@
 async (page) => {
   const origin = await page.evaluate(() => location.origin);
   const api = "https://api.modrinth.com/v2/user/8Fjco3gC/projects";
-  const cacheKey = "modrinth-project-feedback:v1";
+  const cacheKey = "modrinth-project-feedback:v2";
   const assert = (condition, message) => {
     if (!condition) throw new Error(message);
   };
@@ -85,7 +85,7 @@ async (page) => {
   );
   assert(
     (await page.locator(".project-card img").first().getAttribute("src")) ===
-      "assets/brand/project-feedback-logo.png",
+      "/assets/brand/project-feedback-logo.png",
     "Untrusted or missing icon URLs must use the local fallback",
   );
   await page.locator(".project-card[data-project=new-pack]").click();
@@ -95,8 +95,8 @@ async (page) => {
   );
   assert(
     (await page.evaluate(() =>
-      new URL(location.href).searchParams.get("project"),
-    )) === "Abcd1234",
+      location.pathname,
+    )) === "/project/Abcd1234",
     "New links must use stable IDs",
   );
   await page.locator("#project").selectOption("");
@@ -149,7 +149,7 @@ async (page) => {
       ? { ...project, slug: "freecam-renamed", title: "FreeCam Renamed" }
       : project,
   );
-  await page.clock.fastForward(5 * 60 * 1000 + 1000);
+  await page.clock.fastForward(30 * 1000 + 1000);
   await page.waitForFunction(
     () => document.querySelector("#project").value === "FreeCam Renamed",
   );

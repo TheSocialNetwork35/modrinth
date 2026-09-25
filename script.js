@@ -1,9 +1,9 @@
 const FORMSPREE_ENDPOINT = "https://formspree.io/f/mjgnjvvb";
 
 const PROJECTS_ENDPOINT = "https://api.modrinth.com/v2/user/8Fjco3gC/projects";
-const PROJECT_CACHE_KEY = "modrinth-project-feedback:v1";
-const PROJECT_REFRESH_MS = 5 * 60 * 1000;
-const FALLBACK_ICON = "assets/brand/project-feedback-logo.png";
+const PROJECT_CACHE_KEY = "modrinth-project-feedback:v2";
+const PROJECT_REFRESH_MS = 30 * 1000;
+const FALLBACK_ICON = "/assets/brand/project-feedback-logo.png";
 const PROJECT_TYPES = new Map([
   ["mod", ["Mod", "Mods"]],
   ["resourcepack", ["Resource pack", "Resource packs"]],
@@ -30,11 +30,14 @@ let projects = Object.fromEntries(
       type: card.dataset.projectType,
       name: card.querySelector("strong").textContent,
       image: card.querySelector("img").getAttribute("src"),
+      downloads: null,
     },
   ]),
 );
 let lastProjectAttempt = 0;
 let projectRequestPending = false;
+let retryAfter = 0;
+let latestStats = { total: null, state: "loading", checkedAt: null };
 
 const form = document.querySelector("#feedback-form");
 const projectSelect = document.querySelector("#project");
@@ -47,8 +50,52 @@ const characterCount = document.querySelector("#character-count");
 const submitButton = form.querySelector(".submit-button");
 const status = document.querySelector("#form-status");
 
+function publishStats(state, checkedAt = latestStats.checkedAt) {
+  const catalog = Object.values(projects);
+  const total = catalog.every((project) =>
+    Number.isSafeInteger(project.downloads),
+  )
+    ? catalog.reduce((sum, project) => sum + project.downloads, 0)
+    : null;
+  latestStats = {
+    total: Number.isSafeInteger(total) ? total : null,
+    state,
+    checkedAt,
+  };
+  document.dispatchEvent(
+    new CustomEvent("project-catalog:stats", { detail: latestStats }),
+  );
+}
+
+document.addEventListener("project-catalog:request", () => {
+  document.dispatchEvent(
+    new CustomEvent("project-catalog:stats", { detail: latestStats }),
+  );
+});
+
+function updateProjectDownloads() {
+  for (const card of projectGrid.querySelectorAll(".project-card")) {
+    const project = projects[card.dataset.project];
+    let downloads = card.querySelector(".project-downloads");
+    if (!downloads) {
+      downloads = document.createElement("span");
+      downloads.className = "project-downloads";
+      card.querySelector(".project-meta").append(downloads);
+    }
+    downloads.textContent = Number.isSafeInteger(project?.downloads)
+      ? `${project.downloads.toLocaleString("en-US")} downloads`
+      : "Downloads unavailable";
+  }
+}
+
 function setSelectedProject(slug, updateUrl = false) {
   const project = projects[slug];
+  document.querySelector("#feedback-heading").textContent = project
+    ? `Feedback for ${project.name}`
+    : "Send me a message.";
+  document.title = project
+    ? `${project.name} Feedback · TheSocialNetwork35`
+    : "Project Feedback · TheSocialNetwork35";
 
   document.querySelectorAll(".project-card").forEach((card) => {
     if (card.dataset.project === slug) {
@@ -79,10 +126,21 @@ function setSelectedProject(slug, updateUrl = false) {
 
   if (updateUrl) {
     const url = new URL(window.location.href);
-    if (project) url.searchParams.set("project", project.id);
-    else url.searchParams.delete("project");
+    url.pathname = project ? `/project/${project.id}` : "/";
+    url.searchParams.delete("project");
     url.hash = "feedback";
     window.history.replaceState({}, "", url);
+  }
+}
+
+function requestedProject() {
+  const query = new URLSearchParams(location.search).get("project");
+  if (query) return query;
+  const match = location.pathname.match(/^\/project\/([^/]+)\/?$/);
+  try {
+    return match ? decodeURIComponent(match[1]) : null;
+  } catch {
+    return null;
   }
 }
 
@@ -123,6 +181,10 @@ function normalizeProjects(payload) {
         name: project.title,
         type: project.project_type,
         image,
+        downloads:
+          Number.isSafeInteger(project.downloads) && project.downloads >= 0
+            ? project.downloads
+            : null,
       };
     });
   return normalized.sort(
@@ -133,11 +195,20 @@ function normalizeProjects(payload) {
 
 function renderProjects(catalog) {
   const previous = projects[getSlugByProjectName(projectSelect.value)];
-  const selectedKey =
-    previous?.id || new URLSearchParams(location.search).get("project");
+  const selectedKey = previous?.id || requestedProject();
   const signature = (items) =>
-    JSON.stringify([...items].sort((a, b) => a.id.localeCompare(b.id)));
-  if (signature(Object.values(projects)) === signature(catalog)) return;
+    JSON.stringify(
+      items
+        .map(({ downloads, ...metadata }) => metadata)
+        .sort((a, b) => a.id.localeCompare(b.id)),
+    );
+  if (signature(Object.values(projects)) === signature(catalog)) {
+    projects = Object.fromEntries(
+      catalog.map((project) => [project.slug, project]),
+    );
+    updateProjectDownloads();
+    return;
+  }
   const focusedProject =
     document.activeElement.closest?.(".project-card")?.dataset.projectId;
   projects = Object.fromEntries(
@@ -166,7 +237,7 @@ function renderProjects(catalog) {
     for (const project of entries) {
       const card = document.createElement("a");
       card.className = "project-card";
-      card.href = `?project=${encodeURIComponent(project.id)}#feedback`;
+      card.href = `/project/${encodeURIComponent(project.id)}#feedback`;
       card.dataset.project = project.slug;
       card.dataset.projectId = project.id;
       card.dataset.projectType = project.type;
@@ -199,6 +270,7 @@ function renderProjects(catalog) {
   document.querySelector(".project-count").textContent =
     `${catalog.length} ${catalog.length === 1 ? "project" : "projects"}`;
   setSelectedProject(resolveProject(selectedKey));
+  updateProjectDownloads();
   if (focusedProject) {
     const card = [...projectGrid.querySelectorAll(".project-card")].find(
       (item) => item.dataset.projectId === focusedProject,
@@ -211,6 +283,7 @@ async function refreshProjects() {
   if (
     document.hidden ||
     projectRequestPending ||
+    Date.now() < retryAfter ||
     Date.now() - lastProjectAttempt < PROJECT_REFRESH_MS
   )
     return;
@@ -224,9 +297,24 @@ async function refreshProjects() {
       credentials: "omit",
       signal: controller.signal,
     });
-    if (!response.ok) throw new Error("Project catalog unavailable");
+    if (!response.ok) {
+      if (response.status === 429) {
+        const seconds = Number(
+          response.headers.get("X-Ratelimit-Reset") ||
+            response.headers.get("Retry-After"),
+        );
+        retryAfter =
+          Date.now() +
+          (Number.isFinite(seconds) && seconds > 0
+            ? Math.max(seconds, 30)
+            : 60) *
+            1000;
+      }
+      throw new Error("Project catalog unavailable");
+    }
     const payload = await response.json();
     renderProjects(normalizeProjects(payload));
+    publishStats("fresh", Date.now());
     projectStatus.textContent = Object.keys(projects).length
       ? ""
       : "No public projects yet.";
@@ -238,14 +326,17 @@ async function refreshProjects() {
           (project) =>
             project && ["approved", "archived"].includes(project.status),
         )
-        .map(({ id, slug, title, project_type, icon_url, status }) => ({
-          id,
-          slug,
-          title,
-          project_type,
-          icon_url,
-          status,
-        }));
+        .map(
+          ({ id, slug, title, project_type, icon_url, status, downloads }) => ({
+            id,
+            slug,
+            title,
+            project_type,
+            icon_url,
+            status,
+            downloads,
+          }),
+        );
       localStorage.setItem(
         PROJECT_CACHE_KEY,
         JSON.stringify({ savedAt: Date.now(), projects: entries }),
@@ -254,6 +345,7 @@ async function refreshProjects() {
       // The form also works when browser storage is unavailable.
     }
   } catch {
+    publishStats("stale");
     projectStatus.textContent =
       "Updates are temporarily unavailable. You can still send feedback for the projects shown.";
     projectStatus.hidden = false;
@@ -434,9 +526,7 @@ document.addEventListener(
   true,
 );
 
-const initialProject = new URLSearchParams(window.location.search).get(
-  "project",
-);
+const initialProject = requestedProject();
 setSelectedProject(resolveProject(initialProject));
 try {
   const cached = JSON.parse(localStorage.getItem(PROJECT_CACHE_KEY));
@@ -446,6 +536,7 @@ try {
     Date.now() - cached.savedAt < 24 * 60 * 60 * 1000
   ) {
     renderProjects(normalizeProjects(cached.projects));
+    publishStats("cached", cached.savedAt);
   }
 } catch {
   // Use the HTML snapshot if storage is unavailable or corrupt.

@@ -1,0 +1,122 @@
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px 40px;
+}
+.hero-heading {
+  min-width: 0;
+}
+#animated-title {
+  display: flex;
+  align-items: center;
+  height: 76px;
+  max-width: 440px;
+  margin-left: -20px;
+}
+.hero .eyebrow {
+  margin-bottom: 0;
+}
+.hero .hero-copy {
+  margin-top: 0;
+  max-width: 540px;
+}
+#download-total {
+  min-width: 228px;
+  padding-left: 28px;
+  border-left: 1px solid var(--border);
+}
+.downloads-label {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.downloads-value {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  font-size: 36px;
+  font-weight: 650;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.downloads-freshness {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 7px 0 0;
+  max-width: 245px;
+  font-size: 10px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.downloads-freshness time {
+  font-variant-numeric: tabular-nums;
+}
+.freshness-dot {
+  width: 5px;
+  height: 5px;
+  background: #858b94;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+[data-state="fresh"] .freshness-dot {
+  background: var(--accent);
+}
+[data-state="stale"] .freshness-dot {
+  background: #a3682a;
+}
+.project-downloads {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+@media (max-width: 720px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+  #animated-title {
+    height: 72px;
+    max-width: 370px;
+    margin-left: -16px;
+  }
+  #download-total {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0 16px;
+    padding: 16px 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--border);
+    min-width: 0;
+  }
+  .downloads-label {
+    align-self: end;
+    margin-bottom: 4px;
+  }
+  .downloads-value {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+  .downloads-freshness {
+    margin: 0;
+    max-width: 170px;
+  }
+}
+@media (max-width: 360px) {
+  #download-total {
+    display: block;
+  }
+  .downloads-freshness {
+    max-width: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #animated-title {
+    margin-left: 0;
+    height: 76px;
+    font-size: 32px;
+  }
+}
