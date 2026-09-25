@@ -509,6 +509,7 @@ textarea:focus {
 }
 footer {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
@@ -520,6 +521,9 @@ footer {
 }
 footer a {
   text-decoration: none;
+}
+.footer-credit {
+  font-size: 11px;
 }
 @media (hover: hover) {
   .icon-button:hover,
